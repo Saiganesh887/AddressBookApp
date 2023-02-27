@@ -57,7 +57,7 @@ body {
 }
 
 .form {
-    width: 65%;
+    width: 55%;
     padding: 44px 60px;
     background: #FFFFFF 0% 0% no-repeat padding-box;
     box-shadow: 0px 3px 6px #00000029;
@@ -67,7 +67,7 @@ body {
 }
 
 .form-head {
-    width: 65%;
+    width: 55%;
     height: 108px;
     display: flex;
     flex-direction: row;
@@ -82,7 +82,7 @@ body {
 }
 
 #img {
-    padding-left: 80px;
+    /* padding-left: 80px; */
     padding-right: 0px;
 }
 
@@ -184,4 +184,5 @@ select {
 .cancel-button {
     display: flex;
     justify-content: flex-end;
+
   }

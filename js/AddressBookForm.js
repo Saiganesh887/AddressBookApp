@@ -62,33 +62,29 @@ address.addEventListener('input', function() {
 checkForUpdate();
 });
 
-const createAddressBookObject = () => {
-    let contactData = new AddressBookContact();
+const setAddressBookContactData = (contactData) => {
     try {
-        contactData.name = getInputValueById('#name');
+        contactData.name = contactAddressBookObject._name;
     } catch (e) {
         setTextValue('.name-error', e);
         throw e;
     }
 
-    contactData.name = getInputValueById('#name');
-    contactData.phone = getInputValueById('#phone');
-    contactData.address = getInputValueById('#address');
-    contactData.city = getInputValueById('#city');
-    contactData.state = getInputValueById('#state');
-    contactData.zip = getInputValueById('#zip');
-    contactData._id = createContactId();    
+    contactData.phone = contactAddressBookObject._phone;
+    contactData.address = contactAddressBookObject._address;
+    contactData.city = contactAddressBookObject._city;
+    contactData.state = contactAddressBookObject._state;
+    contactData.zip = contactAddressBookObject._zip;  
     alert(contactData.toString());
-    return contactData;
 };
 
-// const createAddressBookObject = (id) => {
-//     let contactData = new AddressBookContact();
-//     if (!id) contactData._id = createContactId();
-//     else contactData._id = id;
-//     setAddressBookContactObject(contactData);
-//     return contactData;
-// };
+const createAddressBookData = (id) => {
+    let contactData = new AddressBookContact();
+    if (!id) contactData._id = createContactId();
+    else contactData._id = id;
+    setAddressBookContactData(contactData);
+    return contactData;
+};
 
 //on submit
 const save = (event) => {
@@ -127,36 +123,24 @@ const setAddressBookContactObject = () => {
     contactAddressBookObject._zip = getValue("#zip");
 };
 
-// function UpdateLocalStorage(contactData) {
-//     let addressBookList = JSON.parse(localStorage.getItem("AddressBookList"));
-//     if (addressBookList != undefined) {
-//         addressBookList.push(contactData);
-//     } else {
-//         addressBookList = [contactData];
-//     }
-//     // alert(addressBookList.toString());
-//     localStorage.setItem("AddressBookList", JSON.stringify(addressBookList));
-// };
-
 const CreateAndUpdateLocalStorage = () => {
     let addressBookList = JSON.parse(localStorage.getItem("AddressBookList"));
     if (addressBookList) {
         let contactAddressBookData = addressBookList.find(contactData => contactData._id == contactAddressBookObject._id);
         if (!contactAddressBookData) {
-            addressBookList.push(createAddressBookObject());
+            addressBookList.push(createAddressBookData());
         } else {
             const index = addressBookList.map(contactData => contactData._id).indexOf(contactAddressBookData._id);
-            addressBookList.splice(index, 1, createAddressBookObject(contactAddressBookData._id));
+            addressBookList.splice(index, 1, createAddressBookData(contactAddressBookData._id));
         }
     } else {
-        addressBookList = [createAddressBookObject()];
+        addressBookList = [createAddressBookData()];
     }
     localStorage.setItem("AddressBookList", JSON.stringify(addressBookList));
     alert("Local Storage Updated Successfully!\nTotal Employees : " + addressBookList.length);
-    // window.location.replace(site_properties.home_page);
 }
 
-const createContactId = () => {
+const createContactId = (id) => {
     let contactId = localStorage.getItem("ContactID");
     contactId = !contactId ? 1 : (parseInt(contactId) + 1).toString();
     localStorage.setItem("ContactID", contactId);
